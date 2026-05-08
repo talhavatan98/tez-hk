@@ -1,0 +1,13 @@
+"Metric","Value"
+"Balanced_Accuracy",0.8875
+"Sensitivity",1
+"Specificity",0.775
+"Precision",0.916666666666667
+"Recall",1
+"F1_Score",0.956521739130435
+"MCC",0.842862187232686
+"ROC_AUC",0.961111111111111
+"PR_AUC",0.980580119272601
+"CV_Balanced_Accuracy",NA
+"CV_Overall_Accuracy",NA
+"Permutation_pvalue",0

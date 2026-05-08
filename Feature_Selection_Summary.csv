@@ -1,0 +1,5 @@
+"Method","mRNA_Features","Meth_Features","Total_Features"
+"DIABLO",6,18,24
+"Single-omics mRNA",10,0,10
+"Single-omics Methylation",0,13,13
+"Random Forest (top 50)",0,50,50

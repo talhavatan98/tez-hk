@@ -1,0 +1,76 @@
+Clinical_Analysis_Results/Cox_Regression_DIABLO_Cohort.csv:
+"Variable","N_events","HR","CI_lower","CI_upper","P_value"
+"IDH_status_WT_vs_Mutant",155,5.90205855415196,4.26642778704428,8.16474505496576,8.03110259578921e-27
+
+Clinical_Analysis_Results/Cox_Regression_Univariate.csv
+"Variable","HR","CI_lower","CI_upper","P_value"
+"IDH_status_WT_vs_Mutant",5.53248921709257,2.06530131522541,14.8203251078184,0.000667487168038499
+
+Clinical_Analysis_Results/Data_Coverage_Summary.csv
+"Variable","N_Available","Percent_Coverage"
+"IDH Status",561,"100.0%"
+"Age",559,"99.6%"
+"Gender",559,"99.6%"
+"Tumor Type",561,"100.0%"
+"Grade",559,"99.6%"
+"Vital Status",561,"100.0%"
+"Survival Data",555,"98.9%"
+
+ve 2 tane Clinical_Analysis_Results/Kaplan_Meier_Curves.pdf ve
+Clinical_Analysis_Results/Kaplan_Meier_Survival_Curves.pdf
+dosyalarım var grafik resimi içeren. 
+
+Clinical_Analysis_Results/Statistical_Tests_Clinical_vs_IDH.csv:
+
+"Variable","Test","Statistic","P_value","Significant"
+"Age","Two-sample t-test","t = -1.260","2.1301e-01","No"
+"Gender","Chi-square test","χ² = 0.264","6.0705e-01","No"
+"Tumor_Type","Chi-square test","χ² = 25.992","3.4284e-07","Yes"
+"Grade","Chi-square test","χ² = 2.611","1.0612e-01","No"
+
+Clinical_Analysis_Results/Statistical_Tests_DIABLO_Cohort.csv:
+
+"Variable","Test","N_analyzed","Statistic","P_value","Significant"
+"Age","Two-sample t-test","559","t = -9.199","1.5364e-17","Yes"
+"Gender","Chi-square test","559","χ² = 0.000","1.0000e+00","No"
+
+Clinical_Analysis_Results/Table1_Demographics_DIABLO_Cohort.csv:
+
+"Variable","Overall","IDH_Mutant","IDH_WT"
+"N","561","399","162"
+"Age (mean ± SD), n=559","44.7 ± 14.4","41.1 ± 12.3","53.5 ± 15.3"
+"  Age <40","252 (45.1%)","218 (54.8%)","34 (21.1%)"
+"  Age 40-60","217 (38.8%)","148 (37.2%)","69 (42.9%)"
+"  Age >60","90 (16.1%)","32 (8.0%)","58 (36.0%)"
+"Gender, n=559","","",""
+"  FEMALE","249 (44.5%)","177 (44.5%)","72 (44.7%)"
+"  MALE","310 (55.5%)","221 (55.5%)","89 (55.3%)"
+"Tumor Type","","",""
+"  GBM","49 (8.7%)","2 (0.5%)","47 (29.0%)"
+"  LGG","512 (91.3%)","397 (99.5%)","115 (71.0%)"
+"Grade, n=559","","",""
+"  Grade 2","246 (44.0%)","213 (53.5%)","33 (20.5%)"
+"  Grade 3","263 (47.0%)","182 (45.7%)","81 (50.3%)"
+"  Grade 4","49 (8.8%)","2 (0.5%)","47 (29.2%)"
+"Vital Status, n=561","","",""
+"  Deceased","156 (27.8%)","73 (18.3%)","83 (51.2%)"
+"Survival (months), median [IQR], n=155 deceased","19.9 [10.7-43.9]","40.9 [26.7-68.9]","12.2 [7.4-19.3]"
+
+Clinical_Analysis_Results/Table1_Demographics.csv
+
+"Variable","Overall","IDH_Mutant","IDH_WT"
+"N","125","91","34"
+"Age (mean ± SD)","44.0 ± 12.5","43.1 ± 12.1","46.4 ± 13.4"
+"  Age <40, n (%)","52 (41.6%)","40 (44.0%)","12 (35.3%)"
+"  Age 40-60, n (%)","60 (48.0%)","44 (48.4%)","16 (47.1%)"
+"  Age >60, n (%)","13 (10.4%)","7 (7.7%)","6 (17.6%)"
+"  FEMALE, n (%)","58 (46.4%)","44 (48.4%)","14 (41.2%)"
+"  MALE, n (%)","67 (53.6%)","47 (51.6%)","20 (58.8%)"
+"  GBM, n (%)","0 (0.0%)","0 (0.0%)","0 (0.0%)"
+"  LGG, n (%)","125 (100.0%)","91 (100.0%)","34 (100.0%)"
+"Grade, n (%)","","",""
+"  Grade 2","57 (45.6%)","46 (50.5%)","11 (32.4%)"
+"  Grade 3","68 (54.4%)","45 (49.5%)","23 (67.6%)"
+"  Grade 4","0 (0.0%)","0 (0.0%)","0 (0.0%)"
+"Deceased, n (%)","19 (15.2%)","7 (7.7%)","12 (35.3%)"
+"Survival time (months), median [IQR]","23.9 [16.2-32.4]","32.3 [19.4-36.9]","21.1 [15.4-25.0]"

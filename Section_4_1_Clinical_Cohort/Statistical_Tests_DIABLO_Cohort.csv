@@ -1,0 +1,3 @@
+"Variable","Test","N_analyzed","Statistic","P_value","Significant"
+"Age","Two-sample t-test","559","t = -9.199","1.5364e-17","Yes"
+"Gender","Chi-square test","559","χ² = 0.000","1.0000e+00","No"

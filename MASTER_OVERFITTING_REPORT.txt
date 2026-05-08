@@ -1,0 +1,54 @@
+════════════════════════════════════════════════════════════════
+       MASTER OVERFITTING SUMMARY - ALL METHODS
+       Generated:  2026-04-28 12:17:03 
+════════════════════════════════════════════════════════════════
+
+METHODS ANALYZED:  4 
+
+════════════════════════════════════════════════════════════════
+UNIFIED COMPARISON TABLE
+════════════════════════════════════════════════════════════════
+
+       Method Train_AUC  Test_AUC    AUC_Gap Gap_Percent Permutation_pvalue
+       DIABLO 0.9739035 0.9378501 0.03605337    3.701945        0.009950249
+         mRNA 0.9760025 0.9471289 0.02887365    2.958359        0.004975124
+  Methylation 0.9796366 0.9311975 0.04843911    4.944600        0.004975124
+ RandomForest 1.0000000 0.9218312 0.07816877    7.816877        0.004975124
+ Test_Balanced_Acc Test_Sensitivity Test_Specificity Overfitting_Risk
+         0.8916317        0.9915966        0.7916667     VERY LOW ✓✓✓
+         0.8812150        0.9915966        0.7708333     VERY LOW ✓✓✓
+         0.9062500        1.0000000        0.8125000     VERY LOW ✓✓✓
+         0.8916317        0.9915966        0.7916667           LOW ✓✓
+
+
+════════════════════════════════════════════════════════════════
+RANKING BY GENERALIZATION (Best to Worst)
+════════════════════════════════════════════════════════════════
+
+1. mRNA            - Gap: 0.0289 (3.0%) - VERY LOW ✓✓✓
+2. DIABLO          - Gap: 0.0361 (3.7%) - VERY LOW ✓✓✓
+3. Methylation     - Gap: 0.0484 (4.9%) - VERY LOW ✓✓✓
+4. RandomForest    - Gap: 0.0782 (7.8%) - LOW ✓✓
+
+
+════════════════════════════════════════════════════════════════
+RECOMMENDATION FOR PUBLICATION
+════════════════════════════════════════════════════════════════
+
+✓✓✓ ALL METHODS ARE PUBLICATION-READY
+
+All methods demonstrate:
+  • Acceptable train-test gaps (no high-risk methods)
+  • Statistical significance (all p < 0.05)
+  • Good generalization to unseen data
+
+RECOMMENDATION: Proceed with publication confidently.
+
+
+════════════════════════════════════════════════════════════════
+For detailed per-method analysis, see individual reports:
+  - DIABLO_Final_Publication_Fixed/
+  - Single_Omics_mRNA_Results/
+  - Single_Omics_Methylation_Results/
+  - Random_Forest_Concatenated_Results/
+════════════════════════════════════════════════════════════════
