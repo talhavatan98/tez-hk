@@ -518,7 +518,7 @@ results_list[["sPLS-DA_mRNA"]] <- list(
 
 # Görsel
 tryCatch({
-  png(file.path(output_dir, "Model_1_sPLSDA_mRNA_Indiv.png"), width = 700, height = 600, res = 300)
+  png(file.path(output_dir, "Model_1_sPLSDA_mRNA_Indiv.png"), width = 2100, height = 1800, res = 300)
   plotIndiv(final_splsda_mrna, comp = c(1, 2), ind.names = FALSE,
             legend = TRUE, ellipse = TRUE,
             title = "sPLS-DA mRNA — Train Separation", style = "ggplot2")
@@ -596,7 +596,7 @@ results_list[["sPLS-DA_Meth"]] <- list(
 
 # Görsel
 tryCatch({
-  png(file.path(output_dir, "Model_2_sPLSDA_Meth_Indiv.png"), width = 700, height = 600, res = 300)
+  png(file.path(output_dir, "Model_2_sPLSDA_Meth_Indiv.png"), width = 2100, height = 1800, res = 300)
   plotIndiv(final_splsda_meth, comp = c(1, 2), ind.names = FALSE,
             legend = TRUE, ellipse = TRUE,
             title = "sPLS-DA Methylation — Train Separation", style = "ggplot2")
@@ -944,7 +944,7 @@ cat(sprintf("  ✓ Performans tablosu kaydedildi: %s\n", file.path(output_dir, "
 # ---- 2. Birleşik ROC Karşılaştırma Grafiği ----
 tryCatch({
   roc_plot_path <- file.path(output_dir, "ROC_Curve_Comparison.png")
-  png(roc_plot_path, width = 800, height = 750, res = 300)
+  png(roc_plot_path, width = 2400, height = 2100, res = 300)
   plot(roc_objects[[1]], col = model_colors[1], lwd = 2.5, legacy.axes = TRUE,
        main = "ROC Curve Comparison — IDH Mutation Detection",
        xlab = "1 - Specificity", ylab = "Sensitivity")
@@ -969,7 +969,7 @@ roc_individual_info <- list(
 for (ri in roc_individual_info) {
   tryCatch({
     auc_val <- round(as.numeric(auc(ri$roc)), 4)
-    png(file.path(output_dir, ri$file), width = 800, height = 750, res = 300)
+    png(file.path(output_dir, ri$file), width = 2400, height = 2100, res = 300)
     plot(ri$roc, col = ri$color, lwd = 2.5, legacy.axes = TRUE,
          main = sprintf("ROC Curve — %s (Test Set)", ri$name),
          xlab = "1 - Specificity", ylab = "Sensitivity")
