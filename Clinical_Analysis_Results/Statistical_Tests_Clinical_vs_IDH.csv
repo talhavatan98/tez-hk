@@ -1,5 +1,0 @@
-"Variable","Test","Statistic","P_value","Significant"
-"Age","Two-sample t-test","t = -1.260","2.1301e-01","No"
-"Gender","Chi-square test","χ² = 0.264","6.0705e-01","No"
-"Tumor_Type","Chi-square test","χ² = 25.992","3.4284e-07","Yes"
-"Grade","Chi-square test","χ² = 2.611","1.0612e-01","No"
