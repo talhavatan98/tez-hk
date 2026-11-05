@@ -1,0 +1,410 @@
+ Adım 6: Kalan NA'lar kNN imputation ile dolduruluyor (5000 prob)...
+    NA içeren hücre sayısı: 1516 (574 probda)
+Cluster size 5000 broken into 2960 2040 
+Cluster size 2960 broken into 1717 1243 
+Cluster size 1717 broken into 850 867 
+Done cluster 850 
+Done cluster 867 
+Done cluster 1717 
+Done cluster 1243 
+Done cluster 2960 
+Cluster size 2040 broken into 777 1263 
+Done cluster 777 
+Done cluster 1263 
+Done cluster 2040 
+    ✓ kNN imputation tamamlandı.
+A matrix: 2 × 6 of type dbl
+used	(Mb)	gc trigger	(Mb)	max used	(Mb)
+Ncells	14803147	790.6	21523407	1149.5	21523407	1149.5
+Vcells	78330749	597.7	494513664	3772.9	1004624878	7664.7
+A matrix: 2 × 6 of type dbl
+used	(Mb)	gc trigger	(Mb)	max used	(Mb)
+Ncells	14803148	790.6	21523407	1149.5	21523407	1149.5
+Vcells	75355800	575.0	395610932	3018.3	1004624878	7664.7
+  Adım 7: Beta → M-value dönüşümü [log2(beta/(1-beta))]...
+    M-value matrisi boyutu: 5000 prob x 595 örnek
+A matrix: 2 × 6 of type dbl
+used	(Mb)	gc trigger	(Mb)	max used	(Mb)
+Ncells	14803196	790.6	21523407	1149.5	21523407	1149.5
+Vcells	75355875	575.0	316488746	2414.7	1004624878	7664.7
+  Adım 8: ComBat batch düzeltmesi uygulanıyor (tam matris, 5000 prob)...
+    6 batch'te sadece 1 örnek bulundu. Bunlar 'Other' altında birleştiriliyor.
+    Tespit edilen batch sayısı: 31
+Found 8 genes with uniform expression within a single batch (all zeros); these will not be adjusted for batch.
+Found31batches
+
+Adjusting for1covariate(s) or covariate level(s)
+
+Standardizing Data across genes
+
+Fitting L/S model and finding priors
+
+Finding parametric adjustments
+
+Adjusting the Data
+
+
+A matrix: 2 × 6 of type dbl
+used	(Mb)	gc trigger	(Mb)	max used	(Mb)
+Ncells	14830938	792.1	21523407	1149.5	21523407	1149.5
+Vcells	75407811	575.4	253190997	1931.7	1004624878	7664.7
+  Adım 9: Transpose uygulanıyor (örnekler × problar)...
+    Final metilasyon matrisi: 595 örnek x 5000 prob
+
+A matrix: 2 × 6 of type dbl
+used	(Mb)	gc trigger	(Mb)	max used	(Mb)
+Ncells	14830975	792.1	21523407	1149.5	21523407	1149.5
+Vcells	75407848	575.4	253190997	1931.7	1004624878	7664.7
+========================================================
+  BÖLÜM 8: STRATİFİYE TRAIN/TEST BÖLME (%80/%20)
+========================================================
+  Train seti: 477 örnek
+  Test seti : 118 örnek
+  Train Y dağılımı:
+Y_train
+Mutant     WT 
+   337    140 
+  Test Y dağılımı:
+Y_test
+Mutant     WT 
+    84     34 
+
+  Z-score normalizasyonu uygulanıyor (train-fit → test-transform)...
+A matrix: 2 × 6 of type dbl
+used	(Mb)	gc trigger	(Mb)	max used	(Mb)
+Ncells	14835486	792.4	21523407	1149.5	21523407	1149.5
+Vcells	89579597	683.5	253190997	1931.7	1004624878	7664.7
+  ✓ Z-score (train-fit) uygulandı: mRNA ve Metilasyon.
+
+========================================================
+  BÖLÜM 9: MODEL 1 — sPLS-DA (mRNA)
+========================================================
+  Optimal keepX tune ediliyor...
+  Seçilen keepX (mRNA): 50, 25
+
+--- sPLS-DA mRNA TEST SONUÇLARI ---
+  ROC-AUC           : 0.9590
+  PR-AUC            : 0.9689
+  Balanced Accuracy : 0.9118
+  Sensitivity       : 1.0000
+  Specificity       : 0.8235
+  F1 Score          : 0.9655
+  MCC               : 0.8767
+  Train ROC-AUC     : 0.9783
+  Permütasyon testi çalıştırılıyor (200 tekrar)...
+  Permütasyon p-değeri: 0.0000  (null AUC ort. = 0.5016)
+
+agg_record_254731580cc: 2
+A matrix: 2 × 6 of type dbl
+used	(Mb)	gc trigger	(Mb)	max used	(Mb)
+Ncells	15176808	810.6	26635531	1422.5	21523407	1149.5
+Vcells	99314660	757.8	253190997	1931.7	1004624878	7664.7
+========================================================
+  BÖLÜM 10: MODEL 2 — sPLS-DA (Metilasyon)
+========================================================
+  Optimal keepX tune ediliyor...
+  Seçilen keepX (Meth): 5, 25
+
+--- sPLS-DA Metilasyon TEST SONUÇLARI ---
+  ROC-AUC           : 0.9723
+  PR-AUC            : 0.9867
+  Balanced Accuracy : 0.9352
+  Sensitivity       : 0.9881
+  Specificity       : 0.8824
+  F1 Score          : 0.9708
+  MCC               : 0.8957
+  Train ROC-AUC     : 0.9856
+  Permütasyon testi çalıştırılıyor (200 tekrar)...
+  Permütasyon p-değeri: 0.0000  (null AUC ort. = 0.5011)
+
+agg_record_254731580cc: 2
+A matrix: 2 × 6 of type dbl
+used	(Mb)	gc trigger	(Mb)	max used	(Mb)
+Ncells	15178804	810.7	26635531	1422.5	21523407	1149.5
+Vcells	101768241	776.5	253190997	1931.7	1004624878	7664.7
+========================================================
+  BÖLÜM 11: MODEL 3 — DIABLO (mRNA + Metilasyon)
+========================================================
+  Optimal keepX tune ediliyor...
+Design matrix has changed to include Y; each block will be
+            linked to Y.
+
+
+You have provided a sequence of keepX of length: 3 for block mRNA and 3 for block Methylation.
+This results in 9 models being fitted for each component and each nrepeat, this may take some time to run, be patient!
+
+
+You can look into the 'BPPARAM' argument to speed up computation time.
+
+  Seçilen keepX (DIABLO):
+$mRNA
+[1] 25 25
+
+$Methylation
+[1] 5 5
+
+Design matrix has changed to include Y; each block will be
+            linked to Y.
+
+
+--- DIABLO TEST SONUÇLARI ---
+  ROC-AUC           : 0.9734
+  PR-AUC            : 0.9864
+  Balanced Accuracy : 0.8852
+  Sensitivity       : 0.9762
+  Specificity       : 0.7941
+  F1 Score          : 0.9480
+  MCC               : 0.8103
+  Train ROC-AUC     : 0.9873
+  Permütasyon testi çalıştırılıyor (200 tekrar)...
+  Permütasyon p-değeri: 0.0000  (null AUC ort. = 0.5018)
+
+  DIABLO görselleri oluşturuluyor...
+  ✓ Sample Separation grafiği kaydedildi.
+  ✓ Variable Correlation Circle grafiği kaydedildi.
+
+  ✓ Circos Plot kaydedildi.
+
+A matrix: 2 × 6 of type dbl
+used	(Mb)	gc trigger	(Mb)	max used	(Mb)
+Ncells	15403427	822.7	26635531	1422.5	26635531	1422.5
+Vcells	113763085	868.0	253190997	1931.7	1004624878	7664.7
+========================================================
+  BÖLÜM 12: MODEL 4 — Concatenated Random Forest
+========================================================
+  Birleştirilmiş (Concatenated) matris boyutu: 477 örnek x 23656 özellik
+  Fast Mode aktif: randomForest paketi ile doğrudan RF eğitiliyor (ntree = 500, mtry = sqrt(p))...
+
+--- Concatenated RF TEST SONUÇLARI ---
+  ROC-AUC           : 0.9666
+  PR-AUC            : 0.9807
+  Balanced Accuracy : 0.9412
+  Sensitivity       : 1.0000
+  Specificity       : 0.8824
+  F1 Score          : 0.9767
+  MCC               : 0.9177
+  Train OOB ROC-AUC : 0.9726
+  Permütasyon testi çalıştırılıyor (200 tekrar)...
+  Permütasyon p-değeri: 0.0000  (null AUC ort. = 0.4957)
+
+
+A matrix: 2 × 6 of type dbl
+used	(Mb)	gc trigger	(Mb)	max used	(Mb)
+Ncells	15491229	827.4	26635531	1422.5	26635531	1422.5
+Vcells	114295942	872.1	253190997	1931.7	1004624878	7664.7
+========================================================
+  BÖLÜM 13: KARŞILAŞTIRMALI DEĞERLENDİRME
+========================================================
+
+============================================================
+  MODEL KARŞILAŞTIRMA TABLOSU (TEST SETİ)
+============================================================
+         Model ROC_AUC PR_AUC Bal_Acc Sensitivity Specificity F1_Score    MCC
+1 sPLS-DA mRNA  0.9590 0.9689  0.9118      1.0000      0.8235   0.9655 0.8767
+2 sPLS-DA Meth  0.9723 0.9867  0.9352      0.9881      0.8824   0.9708 0.8957
+3       DIABLO  0.9734 0.9864  0.8852      0.9762      0.7941   0.9480 0.8103
+4    Concat RF  0.9666 0.9807  0.9412      1.0000      0.8824   0.9767 0.9177
+  ✓ Performans tablosu kaydedildi: /content/IDH_Pipeline_Results/Model_Comparison_Summary.csv
+  ✓ ROC karşılaştırma grafiği kaydedildi: /content/IDH_Pipeline_Results/ROC_Curve_Comparison.png
+  ✓ Bireysel ROC kaydedildi: ROC_sPLSDA_mRNA.png
+
+  ✓ Bireysel ROC kaydedildi: ROC_sPLSDA_Meth.png
+
+  ✓ Bireysel ROC kaydedildi: ROC_DIABLO.png
+
+
+  ✓ Bireysel ROC kaydedildi: ROC_Concat_RF.png
+
+
+
+
+  ✓ Confusion Matrix görselleri kaydedildi ve Colab'da gösterildi.
+
+  ✓ Metrik barplot grafiği kaydedildi: /content/IDH_Pipeline_Results/Metric_Comparison_Barplot.png
+
+========================================================
+  BÖLÜM 14: SEÇİLEN ÖZELLİKLER
+========================================================
+
+[1] sPLS-DA mRNA — Seçilen Genler (İlk 15):
+AQP5, EMP3, RBP1, RAB34, TIMP1, TAGLN2, RARRES2, SH2D4A, FKBP9, NSUN7, VASN, GPX8, BMP2, VAV3, IGFBP2 
+
+[2] sPLS-DA Metilasyon — Seçilen Problar (İlk 15):
+cg10902825, cg12780678, cg00233079, cg21012647, cg19040163, cg22167515, cg00989853, cg05091238, cg17760405, cg14888916, cg01581084, cg18322569, cg19760241, cg01405040, cg02773086 
+
+[3] DIABLO — Seçilen mRNA Genleri (İlk 15):
+AQP5, EMP3, RAB34, RBP1, TIMP1, TAGLN2, RARRES2, SH2D4A, FKBP9, VASN, KIAA0495, NSUN7, BMP2, PRICKLE3, VAV3 
+
+[4] DIABLO — Seçilen Metilasyon Probları (İlk 15):
+cg12780678, cg00233079, cg10902825, cg13531596, cg04725507, cg05091238, cg02773086, cg00989853, cg02810967, cg17760405 
+
+[5] Concat RF — Top 30 Özellik (İlk 15):
+Meth_cg16837338, mRNA_GNL1, Meth_cg10900703, Meth_cg10902825, Meth_cg06899755, mRNA_LOC644936, mRNA_LOC100287718, Meth_cg19466180, Meth_cg23435821, Meth_cg06903384, Meth_cg19058865, Meth_cg02829456, Meth_cg04935109, Meth_cg22471255, Meth_cg20207890 
+
+========================================================
+  BÖLÜM 15: BOOTSTRAP %95 CI & DeLong TESTLERİ
+========================================================
+  Bootstrap %95 CI hesaplanıyor (2000 resample)...
+
+--- ROC-AUC Bootstrap %95 Güven Aralıkları ---
+         Model                    CI_95
+1 sPLS-DA mRNA 0.9590 (0.8942 – 0.9979)
+2 sPLS-DA Meth 0.9723 (0.9342 – 0.9979)
+3       DIABLO 0.9734 (0.9324 – 0.9986)
+4    Concat RF 0.9666 (0.9167 – 0.9993)
+  ✓ Bootstrap CI tablosu kaydedildi: /content/IDH_Pipeline_Results/Bootstrap_95CI_ROC_AUC.csv
+
+  DeLong pairwise model karşılaştırma testleri...
+
+--- DeLong + Bootstrap Pairwise AUC Karşılaştırma ---
+       Model_1      Model_2 Delta_AUC CI_Lower CI_Upper  Z_stat DeLong_p
+1 sPLS-DA mRNA sPLS-DA Meth   -0.0133  -0.0476   0.0210 -0.7602   0.4471
+2 sPLS-DA mRNA       DIABLO   -0.0144  -0.0530   0.0243 -0.7284   0.4664
+3 sPLS-DA mRNA    Concat RF   -0.0075  -0.0215   0.0065 -1.0531   0.2923
+4 sPLS-DA Meth       DIABLO   -0.0011  -0.0108   0.0087 -0.2121   0.8321
+5 sPLS-DA Meth    Concat RF    0.0058  -0.0173   0.0288  0.4911   0.6233
+6       DIABLO    Concat RF    0.0068  -0.0209   0.0345  0.4833   0.6289
+  Bootstrap_p Significant
+1      0.4578       Hayır
+2      0.4654       Hayır
+3      0.3249       Hayır
+4      0.8472       Hayır
+5      0.6276       Hayır
+6      0.6253       Hayır
+  ✓ DeLong test tablosu kaydedildi: /content/IDH_Pipeline_Results/DeLong_Pairwise_AUC_Tests.csv
+
+  ✓ Bootstrap CI grafiği kaydedildi: /content/IDH_Pipeline_Results/Bootstrap_CI_AUC_Plot.png
+
+========================================================
+  BÖLÜM 16: BİYOLOJİK ANLAMLANDIRMA HAZIRLIĞI
+========================================================
+  450k annotasyon yükleniyor (prob → gen eşlemesi)...
+A matrix: 2 × 6 of type dbl
+used	(Mb)	gc trigger	(Mb)	max used	(Mb)
+Ncells	15579534	832.1	26635531	1422.5	26635531	1422.5
+Vcells	114479562	873.5	253190997	1931.7	1004624878	7664.7
+
+--- MODEL BAZINDA GEN SAYILARI ---
+  sPLS-DA mRNA           : 75 gen
+  DIABLO — mRNA bloğu    : 50 gen
+  RF — mRNA özellikleri  : 5 gen
+  sPLS-DA Meth → gen     : 21 gen
+  DIABLO — Meth → gen    : 7 gen
+  RF — Meth → gen        : 17 gen
+
+--- BİRLEŞİM (UNION) SONUÇLARI ---
+  Tüm mRNA kanalı union      : 99 gen
+  Tüm Meth kanalı union      : 38 gen
+  TÜM MODELLER TOPLAM union  : 136 gen
+
+--- KAYDEDILEN DOSYALAR (Enrichr / g:Profiler'a yapıştır) ---
+  BIO_Genes_sPLSDA_mRNA.txt        — sPLS-DA mRNA seçilen genler
+  BIO_Genes_DIABLO_mRNA.txt        — DIABLO mRNA bloğu genleri
+  BIO_Genes_RF_mRNA.txt            — RF mRNA özellikleri
+  BIO_Genes_sPLSDA_Meth_mapped.txt — sPLS-DA Meth prob → gen
+  BIO_Genes_DIABLO_Meth_mapped.txt — DIABLO Meth prob → gen
+  BIO_Genes_RF_Meth_mapped.txt     — RF Meth prob → gen
+  BIO_Union_mRNA_Genes.txt         — Tüm mRNA modellerinin birleşimi
+  BIO_Union_Meth_MappedGenes.txt   — Tüm Meth modellerinin gen birleşimi
+  BIO_Union_ALL_Genes.txt          — TÜM modeller tam gen birleşimi
+  Dizin: /content/IDH_Pipeline_Results
+
+========================================================
+  BÖLÜM 17: DEMOGRAFİK TABLO + KAPLAN-MEIER
+========================================================
+also installing the dependencies ‘colorspace’, ‘fracdiff’, ‘lmtest’, ‘urca’, ‘zoo’, ‘RcppArmadillo’, ‘Deriv’, ‘forecast’, ‘microbenchmark’, ‘rbibutils’, ‘doBy’, ‘SparseM’, ‘MatrixModels’, ‘Rdpack’, ‘minqa’, ‘nloptr’, ‘reformulas’, ‘carData’, ‘Formula’, ‘pbkrtest’, ‘quantreg’, ‘lme4’, ‘litedown’, ‘corrplot’, ‘car’, ‘markdown’, ‘jpeg’, ‘ggsci’, ‘cowplot’, ‘ggsignif’, ‘polynom’, ‘rstatix’, ‘exactRankTests’, ‘mvtnorm’, ‘gridtext’, ‘ggpubr’, ‘maxstat’, ‘ggtext’
+
+
+
+Attaching package: ‘survival’
+
+
+The following object is masked from ‘package:caret’:
+
+    cluster
+
+
+Loading required package: ggpubr
+
+
+Attaching package: ‘survminer’
+
+
+The following object is masked from ‘package:survival’:
+
+    myeloma
+
+
+  Mevcut klinik sütunlar (ilk 30):
+ [1] "_INTEGRATION"                                        
+ [2] "_PANCAN_CNA_PANCAN_K8"                               
+ [3] "_PANCAN_Cluster_Cluster_PANCAN"                      
+ [4] "_PANCAN_DNAMethyl_PANCAN"                            
+ [5] "_PANCAN_RPPA_PANCAN_K8"                              
+ [6] "_PANCAN_UNC_RNAseq_PANCAN_K16"                       
+ [7] "_PANCAN_mutation_PANCAN"                             
+ [8] "_PATIENT"                                            
+ [9] "_cohort"                                             
+[10] "_primary_disease"                                    
+[11] "_primary_site"                                       
+[12] "additional_pharmaceutical_therapy"                   
+[13] "additional_radiation_therapy"                        
+[14] "additional_surgery_locoregional_procedure"           
+[15] "additional_surgery_metastatic_procedure"             
+[16] "age_at_initial_pathologic_diagnosis"                 
+[17] "animal_insect_allergy_history"                       
+[18] "animal_insect_allergy_types"                         
+[19] "asthma_history"                                      
+[20] "bcr_followup_barcode"                                
+[21] "bcr_patient_barcode"                                 
+[22] "bcr_sample_barcode"                                  
+[23] "days_to_additional_surgery_locoregional_procedure"   
+[24] "days_to_additional_surgery_metastatic_procedure"     
+[25] "days_to_birth"                                       
+[26] "days_to_collection"                                  
+[27] "days_to_death"                                       
+[28] "days_to_initial_pathologic_diagnosis"                
+[29] "days_to_last_followup"                               
+[30] "days_to_new_tumor_event_additional_surgery_procedure"
+  Kullanılacak sütunlar: Yaş=age_at_initial_pathologic_diagnosis | Cinsiyet=gender | Grade=neoplasm_histologic_grade | OS=days_to_death | Event=vital_status
+
+--- Çizelge 4.1: Kohort Demografisi (N=595) ---
+                Değişken Toplam (N=595) IDH Mutant (n=421)
+    Yaş (Yıl), Ort. ± SS    44.6 ± 14.4        41.0 ± 12.3
+     Yaş Grupları, n (%)                                  
+                    < 40    254 (%42.7)        220 (%52.3)
+                 40 - 60    242 (%40.7)        167 (%39.7)
+                    > 60     96 (%16.1)          33 (%7.8)
+ Cinsiyet (Erkek), n (%)    327 (%55.0)        232 (%55.1)
+   Derece (Grade), n (%)                                  
+                      G2    258 (%43.4)        225 (%53.4)
+                      G3    270 (%45.4)        191 (%45.4)
+                      G4     65 (%10.9)           3 (%0.7)
+       Vefat Eden, n (%)    179 (%30.1)         74 (%17.6)
+    Medyan Sağkalım (Ay)           67.4               95.5
+ IDH Yabanıl Tip (n=174)  P-Değeri
+             53.6 ± 15.2 3.712e-19
+                          6.45e-21
+              34 (%19.5)          
+              75 (%43.1)          
+              63 (%36.2)          
+              95 (%54.6)    0.3742
+                         9.999e-05
+              33 (%19.0)          
+              79 (%45.4)          
+              62 (%35.6)          
+             105 (%60.3) 1.198e-24
+                    19.4         -
+  ✓ Demografik tablo kaydedildi: Tablo_Demografik_Kohort.csv
+Ignoring unknown labels:
+• colour : "IDH Durumu"
+Ignoring unknown labels:
+• colour : "IDH Durumu"
+
+  ✓ Kaplan-Meier eğrisi kaydedildi: KM_Overall_Survival_IDH.png
+  Log-rank p-değeri: 0
+
+========================================================
+  ✓ TÜM ANALİZLER BAŞARIYLA TAMAMLANDI!
+  Tüm çıktılar, tablolar ve yüksek çözünürlüklü görseller bu dizindedir: /content/IDH_Pipeline_Results
+========================================================

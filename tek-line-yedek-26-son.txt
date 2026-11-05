@@ -14,6 +14,7 @@
 FAST_MODE  <- TRUE
 TRAIN_PROP <- 0.80   # Train set oranı (%80 train, %20 test)
 SEED_VAL   <- 42     # Üretilebilirlik için sabit seed
+N_PERM     <- if (FAST_MODE) 200 else 1000  # Permütasyon testi tekrar sayısı
 
 # ==============================================================================
 # YARDIMCI FONKSİYONLAR
@@ -28,6 +29,21 @@ calc_mcc <- function(cm) {
                 as.numeric(tn + fp) * as.numeric(tn + fn))
   if (denom == 0) return(0)
   return((tp * tn - fp * fn) / denom)
+}
+
+# Permütasyon testi — Y_test etiketleri N_PERM kez karıştırılır, model sabit tutulur.
+# p-değeri: null_AUC >= gözlenen_AUC olan permütasyon oranı.
+run_permutation_test <- function(obs_auc, prob_scores, Y_labels, n_perm, seed = SEED_VAL) {
+  set.seed(seed)
+  null_aucs <- vapply(seq_len(n_perm), function(i) {
+    Y_perm <- sample(Y_labels)
+    tryCatch(
+      as.numeric(auc(roc(Y_perm, prob_scores,
+                         levels = c("WT", "Mutant"), direction = "<", quiet = TRUE))),
+      error = function(e) 0.5
+    )
+  }, numeric(1))
+  list(p_value = mean(null_aucs >= obs_auc), null_mean = mean(null_aucs))
 }
 
 cat("========================================================\n")
@@ -506,10 +522,17 @@ cat(sprintf("  MCC               : %.4f\n", mcc_mrna))
 pred_train_mrna <- predict(final_splsda_mrna, newdata = X_mrna_train, dist = "centroids.dist")
 prob_train_mrna <- pred_train_mrna$predict[, "Mutant", ncomp_mrna]
 roc_train_mrna  <- roc(Y_train, prob_train_mrna, levels = c("WT", "Mutant"), direction = "<", quiet = TRUE)
-cat(sprintf("  Train ROC-AUC     : %.4f\n\n", as.numeric(auc(roc_train_mrna))))
+cat(sprintf("  Train ROC-AUC     : %.4f\n", as.numeric(auc(roc_train_mrna))))
+
+# Permütasyon testi (Y_test shuffle, model sabit)
+cat(sprintf("  Permütasyon testi çalıştırılıyor (%d tekrar)...\n", N_PERM))
+perm_mrna <- run_permutation_test(as.numeric(auc(roc_mrna)), prob_mrna, Y_test, N_PERM)
+cat(sprintf("  Permütasyon p-değeri: %.4f  (null AUC ort. = %.4f)\n\n",
+            perm_mrna$p_value, perm_mrna$null_mean))
 
 results_list[["sPLS-DA_mRNA"]] <- list(
   cm = cm_mrna, roc = roc_mrna, pr = pr_mrna, f1 = f1_mrna, mcc = mcc_mrna,
+  perm_p = perm_mrna$p_value,
   selected_features = unique(c(
     selectVar(final_splsda_mrna, comp = 1)$name,
     selectVar(final_splsda_mrna, comp = 2)$name
@@ -584,10 +607,17 @@ cat(sprintf("  MCC               : %.4f\n", mcc_meth))
 pred_train_meth <- predict(final_splsda_meth, newdata = X_meth_train, dist = "centroids.dist")
 prob_train_meth <- pred_train_meth$predict[, "Mutant", ncomp_meth]
 roc_train_meth  <- roc(Y_train, prob_train_meth, levels = c("WT", "Mutant"), direction = "<", quiet = TRUE)
-cat(sprintf("  Train ROC-AUC     : %.4f\n\n", as.numeric(auc(roc_train_meth))))
+cat(sprintf("  Train ROC-AUC     : %.4f\n", as.numeric(auc(roc_train_meth))))
+
+# Permütasyon testi (Y_test shuffle, model sabit)
+cat(sprintf("  Permütasyon testi çalıştırılıyor (%d tekrar)...\n", N_PERM))
+perm_meth <- run_permutation_test(as.numeric(auc(roc_meth)), prob_meth, Y_test, N_PERM)
+cat(sprintf("  Permütasyon p-değeri: %.4f  (null AUC ort. = %.4f)\n\n",
+            perm_meth$p_value, perm_meth$null_mean))
 
 results_list[["sPLS-DA_Meth"]] <- list(
   cm = cm_meth, roc = roc_meth, pr = pr_meth, f1 = f1_meth, mcc = mcc_meth,
+  perm_p = perm_meth$p_value,
   selected_features = unique(c(
     selectVar(final_splsda_meth, comp = 1)$name,
     selectVar(final_splsda_meth, comp = 2)$name
@@ -692,10 +722,17 @@ prob_train_diablo_mrna <- pred_train_diablo$predict$mRNA[, "Mutant", ncomp_diabl
 prob_train_diablo_meth <- pred_train_diablo$predict$Methylation[, "Mutant", ncomp_diablo]
 prob_train_diablo      <- (prob_train_diablo_mrna + prob_train_diablo_meth) / 2
 roc_train_diablo       <- roc(Y_train, prob_train_diablo, levels = c("WT", "Mutant"), direction = "<", quiet = TRUE)
-cat(sprintf("  Train ROC-AUC     : %.4f\n\n", as.numeric(auc(roc_train_diablo))))
+cat(sprintf("  Train ROC-AUC     : %.4f\n", as.numeric(auc(roc_train_diablo))))
+
+# Permütasyon testi (Y_test shuffle, model sabit)
+cat(sprintf("  Permütasyon testi çalıştırılıyor (%d tekrar)...\n", N_PERM))
+perm_diablo <- run_permutation_test(as.numeric(auc(roc_diablo)), prob_diablo, Y_test, N_PERM)
+cat(sprintf("  Permütasyon p-değeri: %.4f  (null AUC ort. = %.4f)\n\n",
+            perm_diablo$p_value, perm_diablo$null_mean))
 
 results_list[["DIABLO"]] <- list(
   cm = cm_diablo, roc = roc_diablo, pr = pr_diablo, f1 = f1_diablo, mcc = mcc_diablo,
+  perm_p = perm_diablo$p_value,
   selected_mrna = unique(unlist(lapply(1:ncomp_diablo, function(i) selectVar(final_diablo, block = "mRNA", comp = i)$mRNA$name))),
   selected_meth = unique(unlist(lapply(1:ncomp_diablo, function(i) selectVar(final_diablo, block = "Methylation", comp = i)$Methylation$name)))
 )
@@ -873,10 +910,17 @@ if (FAST_MODE) {
   oob_prob_rf  <- rf_model_tuned$finalModel$votes[, "Mutant"]
   roc_oob_rf   <- roc(Y_train, oob_prob_rf, levels = c("WT", "Mutant"), direction = "<", quiet = TRUE)
 }
-cat(sprintf("  Train OOB ROC-AUC : %.4f\n\n", as.numeric(auc(roc_oob_rf))))
+cat(sprintf("  Train OOB ROC-AUC : %.4f\n", as.numeric(auc(roc_oob_rf))))
+
+# Permütasyon testi (Y_test shuffle, model sabit)
+cat(sprintf("  Permütasyon testi çalıştırılıyor (%d tekrar)...\n", N_PERM))
+perm_rf <- run_permutation_test(as.numeric(auc(roc_rf)), prob_rf, Y_test, N_PERM)
+cat(sprintf("  Permütasyon p-değeri: %.4f  (null AUC ort. = %.4f)\n\n",
+            perm_rf$p_value, perm_rf$null_mean))
 
 results_list[["Concat_RF"]] <- list(
   cm = cm_rf, roc = roc_rf, pr = pr_rf, f1 = f1_rf, mcc = mcc_rf,
+  perm_p = perm_rf$p_value,
   top_features = imp_df$Feature
 )
 
@@ -1337,7 +1381,7 @@ cat("========================================================\n")
 # Gerekli paketleri yükle
 for (pkg in c("survival", "survminer")) {
   if (!requireNamespace(pkg, quietly = TRUE))
-    install.packages(pkg, repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest", quiet = TRUE)
+    install.packages(pkg, repos = "https://cloud.r-project.org", quiet = TRUE)
 }
 library(survival)
 library(survminer)
@@ -1384,6 +1428,37 @@ if (!is.na(age_col)) {
     P_Degeri   = as.character(age_p),
     stringsAsFactors = FALSE
   )
+
+  # ---- Yaş Grupları (<40 / 40-60 / >60) ----
+  age_grp <- cut(age_vals, breaks = c(-Inf, 39.99, 60, Inf),
+                 labels = c("< 40", "40 - 60", "> 60"), right = TRUE)
+  age_grp_tbl  <- table(age_grp, grp)
+  age_grp_test <- tryCatch(
+    chisq.test(age_grp_tbl),
+    error = function(e) tryCatch(
+      fisher.test(age_grp_tbl, simulate.p.value = TRUE, B = 10000),
+      error = function(e2) NULL
+    )
+  )
+  age_grp_p <- if (!is.null(age_grp_test)) signif(age_grp_test$p.value, 4) else NA
+
+  demo_rows[["Yaş Grupları (başlık)"]] <- data.frame(
+    Degisken = "Yaş Grupları, n (%)", Toplam = "", IDH_Mutant = "", IDH_WT = "",
+    P_Degeri = as.character(age_grp_p), stringsAsFactors = FALSE
+  )
+  for (ag in c("< 40", "40 - 60", "> 60")) {
+    ng_total  <- sum(age_grp == ag, na.rm = TRUE)
+    ng_mutant <- sum(age_grp[mutant_idx] == ag, na.rm = TRUE)
+    ng_wt     <- sum(age_grp[wt_idx]     == ag, na.rm = TRUE)
+    demo_rows[[paste0("YasGrp_", ag)]] <- data.frame(
+      Degisken   = sprintf("  %s", ag),
+      Toplam     = sprintf("%d (%%%0.1f)", ng_total,  100 * ng_total  / n_total),
+      IDH_Mutant = sprintf("%d (%%%0.1f)", ng_mutant, 100 * ng_mutant / n_mutant),
+      IDH_WT     = sprintf("%d (%%%0.1f)", ng_wt,     100 * ng_wt     / n_wt),
+      P_Degeri   = "",
+      stringsAsFactors = FALSE
+    )
+  }
 }
 
 # ---- Cinsiyet ----
